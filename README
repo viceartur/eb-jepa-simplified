@@ -1,0 +1,51 @@
+Self-Supervised Learning on CIFAR-10 (SIGReg + BCS)
+This project implements a self-supervised learning (SSL) framework on CIFAR-10 using a custom BCS
+(Batched Characteristic Slicing) loss inspired by SIGReg, combined with a linear probe for evaluation.
+
+Overview
+Backbone: Custom lightweight ResNet-like architecture (ResNeTiny)
+SSL Objective: Invariance loss (MSE) + BCS loss (Gaussianity regularization)
+Evaluation: Online linear probe
+Dataset: CIFAR-10
+Logging: Optional Weights & Biases (wandb)
+
+Installation
+pip install torch torchvision tqdm wandb
+
+Training
+Run training:
+python main.py
+Enable Weights & Biases logging:
+python main.py --wandb True
+
+Method
+Each image is transformed into two random views using standard augmentations such as random resized crop, color jitter, grayscale, and horizontal flip.
+Total loss:
+L = L_invariance + λ * L_BCS
+L_invariance: Mean Squared Error between embeddings
+L_BCS: Encourages Gaussian-distributed features using random projections
+
+Evaluation
+A linear classifier (probe) is trained on frozen features to measure representation quality.
+
+Output
+- Training loss (SSL + linear probe)
+- Validation accuracy
+- Saved checkpoint including backbone, probe, and optimizer
+
+Visualization
+The script generates views_visualization.png showing augmented crops.
+
+Notes
+- Designed for experimentation with self-supervised learning
+- Lightweight and fast training
+- Easily extendable
+
+Future Improvements
+- Add projection head (MLP)
+- Try cosine similarity loss
+- Stronger augmentations
+- Scale backbone
+
+Author
+Artur Sopov and Sam Pagon
